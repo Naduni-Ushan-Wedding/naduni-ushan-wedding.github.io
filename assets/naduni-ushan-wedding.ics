@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Naduni and Ushan Wedding//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:naduni-ushan-wedding-20261210@wedding-invitation
+DTSTAMP:20261104T000000Z
+DTSTART:20261210T030000Z
+DTEND:20261210T100000Z
+SUMMARY:Naduni & Ushan — Wedding Celebration
+DESCRIPTION:With love and joy we invite you to celebrate our wedding. Poruwa ceremony at 9:00 AM Sri Lanka time.
+LOCATION:Earl's Court\, Cinnamon Lakeside\, Colombo\, Sri Lanka
+END:VEVENT
+END:VCALENDAR

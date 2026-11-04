@@ -1,0 +1,148 @@
+'use strict';
+
+const $ = (selector) => document.querySelector(selector);
+const weddingDate = new Date('2026-12-10T08:30:00+05:30');
+
+// Every invitation can have a personal URL:
+// ?guest=Kumari%20Perera   OR   ?guest=<base64 of "n:Kumari Perera">
+// Names placed in URLs can be seen by anyone with the link. Do not put sensitive details here.
+function getGuestName() {
+  const params = new URLSearchParams(window.location.search);
+  const value = (params.get('guest') || params.get('to') || '').trim().slice(0, 400);
+  if (!value) return '';
+  let name = value;
+  try {
+    const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = atob(normalized);
+    const bytes = Uint8Array.from(decoded, (c) => c.charCodeAt(0));
+    const text = new TextDecoder().decode(bytes);
+    if (text.startsWith('n:')) name = text.slice(2);
+    else if (/^w:\d+$/.test(text)) return ''; // The reference site's ID tokens require its private guest list.
+  } catch { /* Plain-text name parameter. */ }
+  if (/^w:\d+$/.test(name) || /[<>\r\n]/.test(name)) return '';
+  return name.replace(/\s+/g, ' ').trim().slice(0, 90);
+}
+
+const guest = getGuestName();
+if (guest) {
+  $('#opening-guest').textContent = `Dear ${guest}`;
+  $('#hero-guest').textContent = `A special invitation for ${guest}`;
+  $('#guest-name').value = guest;
+}
+
+// Opening screen and subtle reveal animations.
+document.documentElement.classList.add('js-ready');
+const opening = $('#opening');
+function openInvitation() {
+  if (opening.classList.contains('is-opened')) return;
+  opening.classList.add('is-opened');
+  opening.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('locked');
+  $('#open-invite').blur();
+  setTimeout(() => { opening.hidden = true; }, 1000);
+  // The YouTube music player can be started separately via the "Our song" control.
+}
+$('#open-invite').addEventListener('click', openInvitation);
+
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+}
+
+// Lightweight petals (disabled for visitors who prefer reduced motion).
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const petals = $('#petals');
+  for (let i = 0; i < 17; i++) {
+    const petal = document.createElement('i');
+    petal.className = 'petal';
+    petal.style.setProperty('--left', `${(i * 43 + 11) % 100}%`);
+    petal.style.setProperty('--duration', `${11 + (i * 7) % 11}s`);
+    petal.style.setProperty('--delay', `${-1 * ((i * 19) % 21)}s`);
+    petal.style.setProperty('--drift', `${(i % 2 === 0 ? 1 : -1) * (40 + (i * 17) % 120)}px`);
+    petal.style.setProperty('--blur', `${i % 5 === 0 ? '1.2' : '0'}px`);
+    petals.appendChild(petal);
+  }
+}
+
+// Countdown uses Sri Lanka time (+05:30), regardless of a visitor's time zone.
+function updateCountdown() {
+  const secondsLeft = Math.max(0, Math.floor((weddingDate.getTime() - Date.now()) / 1000));
+  const vals = [Math.floor(secondsLeft / 86400), Math.floor((secondsLeft % 86400) / 3600), Math.floor((secondsLeft % 3600) / 60), secondsLeft % 60];
+  ['days', 'hours', 'minutes', 'seconds'].forEach((id, i) => { document.getElementById(id).textContent = String(vals[i]).padStart(2, '0'); });
+  if (!secondsLeft) $('#countdown').setAttribute('aria-label', 'Our wedding day has arrived!');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Official YouTube embed – NOT a downloaded audio track.
+// start=95 → 1:35, end=120 → 2:00. Some browsers require tapping the player.
+const musicPanel = $('#music-panel');
+const musicButton = $('#music-button');
+function showMusic() {
+  musicPanel.hidden = false;
+  musicButton.setAttribute('aria-expanded', 'true');
+  $('#youtube-slot').innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.title = 'Wedding song from YouTube, 1 minute 35 seconds to 2 minutes';
+  iframe.loading = 'eager';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  iframe.allowFullscreen = true;
+  iframe.src = 'https://www.youtube-nocookie.com/embed/8gexRRFfbpQ?start=95&end=120&autoplay=1&controls=1&playsinline=1&loop=1&playlist=8gexRRFfbpQ';
+  $('#youtube-slot').appendChild(iframe);
+}
+function hideMusic() {
+  musicPanel.hidden = true;
+  musicButton.setAttribute('aria-expanded', 'false');
+  $('#youtube-slot').replaceChildren(); // Stops playback entirely.
+}
+musicButton.addEventListener('click', () => musicPanel.hidden ? showMusic() : hideMusic());
+$('#close-music').addEventListener('click', hideMusic);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !musicPanel.hidden) hideMusic(); });
+$('#invitation-video').addEventListener('play', () => { if (!musicPanel.hidden) hideMusic(); });
+
+// RSVP is intentionally transparent about where it goes. Without a backend,
+// a static GitHub Pages site cannot silently collect submissions.
+const form = $('#rsvp-form');
+const countRow = $('#guest-count-row');
+const attendanceInputs = [...document.querySelectorAll('input[name="attending"]')];
+function updateAttendance() { countRow.hidden = attendanceInputs.find(el => el.checked).value.startsWith('Sorry'); }
+attendanceInputs.forEach((input) => input.addEventListener('change', updateAttendance));
+updateAttendance();
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!form.reportValidity()) return;
+  const name = $('#guest-name').value.trim();
+  const choice = attendanceInputs.find(el => el.checked).value;
+  const count = choice.startsWith('Sorry') ? 0 : Number($('#guest-count').value);
+  const message = $('#rsvp-message').value.trim();
+  const lines = [
+    '💌 Naduni & Ushan — Wedding RSVP',
+    `Guest: ${name}`,
+    `Attendance: ${choice}`,
+    ...(count ? [`Number of attendees: ${count}`] : []),
+    ...(message ? [`Wishes: ${message}`] : []),
+    'Wedding: Thursday, 10 December 2026',
+  ];
+  window.open(`https://wa.me/94777591732?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
+});
+
+// Share the public link, not the current personalised guest URL.
+$('#share-button').addEventListener('click', async () => {
+  const url = new URL(window.location.href);
+  url.search = ''; url.hash = '';
+  const data = { title: 'Naduni & Ushan | Wedding Invitation', text: 'You are warmly invited to celebrate the wedding of Naduni and Ushan!', url: url.toString() };
+  try {
+    if (navigator.share) await navigator.share(data);
+    else if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(data.url); $('#share-button').textContent = 'Invitation link copied ✓'; }
+    else window.prompt('Copy the invitation link:', data.url);
+  } catch (e) {
+    if (e.name !== 'AbortError') window.prompt('Copy the invitation link:', data.url);
+  }
+});
