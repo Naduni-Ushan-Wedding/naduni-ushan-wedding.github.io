@@ -101,7 +101,7 @@ html:has(body.locked){overflow:hidden}
 .date-grid{font-weight:500;font-size:12px;gap:26px}
 .date-grid>span{border-color:#cdbb9b}
 .date-big{border-color:#ded1b9}
-.date-big strong{font-weight:400}
+.date-big strong{font-family:'Playfair Display',Georgia,serif;font-weight:400;font-variant-numeric:lining-nums;line-height:1.1;letter-spacing:-.06em;padding-right:.06em}
 .countdown{gap:0;max-width:420px;margin-left:auto;margin-right:auto}
 .countdown div{background:transparent;border:0;border-right:1px solid var(--line);flex:1;min-width:0}
 .countdown div:last-child{border-right:0}
