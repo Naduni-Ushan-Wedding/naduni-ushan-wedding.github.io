@@ -9,12 +9,12 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Naduni & Ushan — Wedding Invitation">
   <meta property="og:description" content="With love in our hearts, we invite you to celebrate our wedding on 10 December 2026.">
-  <meta property="og:image" content="assets/couple.png">
+  <meta property="og:image" content="assets/couple-cutout.png">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=scrollbar-fix-2">
+  <link rel="stylesheet" href="styles.css?v=venue-and-portrait-3">
   <title>Naduni & Ushan — Wedding Invitation</title>
 </head>
 <body class="locked">
@@ -47,9 +47,6 @@
       <a href="#location">Location</a>
       <a href="#rsvp">RSVP</a>
     </nav>
-    <button id="music-button" class="music-button" type="button" aria-label="Play our song" aria-pressed="false">
-      <span class="music-note" aria-hidden="true">♫</span><span id="music-label">Our song</span>
-    </button>
   </header>
 
   <main>
@@ -69,7 +66,7 @@
         <div class="arch-backdrop">
           <div class="arch-lace mandala" aria-hidden="true"></div>
           <div class="arch-script script">Better together</div>
-          <img class="hero-couple" src="assets/couple.png" alt="Illustration of Naduni and Ushan in traditional wedding attire" fetchpriority="high">
+          <img class="hero-couple" src="assets/couple-cutout.png" alt="Illustration of Naduni and Ushan in traditional wedding attire" width="1024" height="1536" fetchpriority="high">
           <div class="little-stars" aria-hidden="true">✦ &nbsp; ✧ &nbsp; ✦</div>
         </div>
         <div class="hero-floating-date"><strong>10</strong><span>DEC<br>2026</span></div>
@@ -129,12 +126,7 @@
       <h2 class="section-title reveal">The <em>Celebration</em></h2>
       <div class="location-card reveal">
         <div class="location-art">
-          <div class="venue-illustration" aria-hidden="true">
-            <div class="venue-sun"></div>
-            <div class="venue-roof"></div>
-            <div class="venue-building"><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="venue-water"></div>
-          </div>
+          <img class="venue-photo" src="assets/earls-court.jpg" alt="Earl's Court at Cinnamon Lakeside Colombo, arranged with round banquet tables, flowers and crystal chandeliers" width="1000" height="600" loading="lazy">
         </div>
         <div class="location-copy">
           <p class="eyebrow">Thursday, 10 December 2026</p>
@@ -145,18 +137,6 @@
           <p class="location-hours">From 8:30 AM to 3:30 PM<br><span>Poruwa ceremony at 9:00 AM</span></p>
           <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Cinnamon%20Lakeside%20Colombo" target="_blank" rel="noopener noreferrer">Get directions <span aria-hidden="true">↗</span></a>
         </div>
-      </div>
-    </section>
-
-    <section class="section film-section" id="invitation-film">
-      <p class="eyebrow reveal">A little keepsake</p>
-      <h2 class="section-title reveal">Our invitation <em>film</em></h2>
-      <p class="section-lead reveal">Watch the original invitation, shared with love.</p>
-      <div class="film-shell reveal">
-        <video id="invitation-video" controls playsinline preload="none" poster="assets/couple.png" aria-label="Original wedding invitation video">
-          <source src="assets/invitation-film.mp4" type="video/mp4">
-          Your browser does not support video playback.
-        </video>
       </div>
     </section>
 
@@ -200,7 +180,6 @@
       <h2 class="script reveal">Thank You</h2>
       <p class="reveal">Your presence and blessings will make our day even more special.</p>
       <p class="script last-names reveal">Naduni &amp; Ushan</p>
-      <button class="share-btn reveal" id="share-button" type="button">Share this invitation <span aria-hidden="true">↗</span></button>
     </section>
   </main>
 
@@ -208,6 +187,6 @@
 
   <!-- This file contains only the original song's 1:35–2:10 segment. -->
   <audio id="wedding-audio" src="assets/wedding-song.mp3?v=35s" preload="metadata" loop></audio>
-  <script src="script.js" defer></script>
+  <script src="script.js?v=venue-and-portrait-3" defer></script>
 </body>
 </html>

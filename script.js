@@ -93,32 +93,14 @@ setInterval(updateCountdown, 1000);
 
 // The local 35-second clip is already trimmed to 1:35–2:10 and loops natively.
 const weddingAudio = $('#wedding-audio');
-const musicButton = $('#music-button');
-const musicLabel = $('#music-label');
 weddingAudio.volume = 0.6;
-function updateMusicButton() {
-  const playing = !weddingAudio.paused && !weddingAudio.ended;
-  musicButton.setAttribute('aria-pressed', String(playing));
-  musicButton.setAttribute('aria-label', playing ? 'Pause our song' : 'Play our song');
-  musicLabel.textContent = playing ? 'Pause song' : 'Our song';
-}
 async function playMusic() {
   try {
     await weddingAudio.play();
-  } catch (error) {
-    if (error.name === 'AbortError') return; // The guest paused while audio loaded.
-    updateMusicButton();
-    musicLabel.textContent = 'Tap for music';
+  } catch {
+    // Opening the invitation must still work when audio cannot play.
   }
 }
-weddingAudio.addEventListener('play', updateMusicButton);
-weddingAudio.addEventListener('pause', updateMusicButton);
-weddingAudio.addEventListener('error', () => {
-  updateMusicButton();
-  musicLabel.textContent = 'Retry music';
-});
-musicButton.addEventListener('click', () => weddingAudio.paused ? playMusic() : weddingAudio.pause());
-$('#invitation-video').addEventListener('play', () => weddingAudio.pause());
 
 // RSVP is intentionally transparent about where it goes. Without a backend,
 // a static GitHub Pages site cannot silently collect submissions.
@@ -144,18 +126,4 @@ form.addEventListener('submit', (e) => {
     'Wedding: Thursday, 10 December 2026',
   ];
   window.open(`https://wa.me/94777591732?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
-});
-
-// Share the public link, not the current personalised guest URL.
-$('#share-button').addEventListener('click', async () => {
-  const url = new URL(window.location.href);
-  url.search = ''; url.hash = '';
-  const data = { title: 'Naduni & Ushan | Wedding Invitation', text: 'You are warmly invited to celebrate the wedding of Naduni and Ushan!', url: url.toString() };
-  try {
-    if (navigator.share) await navigator.share(data);
-    else if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(data.url); $('#share-button').textContent = 'Invitation link copied ✓'; }
-    else window.prompt('Copy the invitation link:', data.url);
-  } catch (e) {
-    if (e.name !== 'AbortError') window.prompt('Copy the invitation link:', data.url);
-  }
 });

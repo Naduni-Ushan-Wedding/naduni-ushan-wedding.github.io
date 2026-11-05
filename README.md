@@ -7,7 +7,7 @@ A responsive ivory-and-gold wedding invitation website.
 - **Venue:** Earl's Court, Cinnamon Lakeside, Colombo
 - **Guest links:** Open `create-guest-links.html` after GitHub Pages is enabled.
 - **RSVP:** WhatsApp-based; no Google Sheets backend.
-- **Music:** `assets/wedding-song.mp3` contains the original song's 1:35–2:10 excerpt. Clicking the red wax seal opens the invitation and plays this 35-second clip on repeat. The header music button pauses/resumes playback; no YouTube player is loaded.
+- **Music:** `assets/wedding-song.mp3` contains the original song's 1:35–2:10 excerpt. Clicking the red wax seal opens the invitation and plays this 35-second clip on repeat. There is no on-page music button or video player.
 
 ## Send invitations to different guests
 
@@ -36,18 +36,15 @@ This static site can also be hosted on Netlify with a free `netlify.app` address
 2. Upload the prepared `naduni-and-ushan-netlify.zip` package from the parent folder, or drag in the site folder containing `index.html`, `styles.css`, `script.js`, `create-guest-links.html`, and `assets/`. Do not upload the `.git` folder.
 3. Under the deployed preview URL, choose **Customize** and set the project name to `naduni-and-ushan`, if available. An alternative is `naduni-ushan-wedding-2026`.
 4. Copy the actual published HTTPS address. The suggested name is not reserved or live until deployment succeeds.
-5. Open `/create-guest-links.html` on that address to generate customer-facing guest links. It automatically uses the current hosting address. The invitation's Share button also uses that address.
+5. Open `/create-guest-links.html` on that address to generate customer-facing guest links. It automatically uses the current hosting address.
 
 After later changes, upload a fresh package to the **existing project's Deploys page** to keep the same address. GitHub Pages remains a separate deployment unless you connect Netlify to the GitHub repository.
 
 Official guide: https://docs.netlify.com/start/quickstarts/netlify-drop-quickstart/
 
-## Two media files still to upload
-The source package includes these two larger binary files, but they have **not** been uploaded to GitHub yet:
+## Images
 
-1. `assets/invitation-film.mp4`
-2. `assets/invitation-poster.png` (optional — the page currently uses `assets/couple.png` as its poster)
+- `assets/couple-cutout.png`: background removed with built-in imagegen from the original `assets/couple.png`. Edit prompt: preserve the full bride and groom illustration; remove the black background and decorative sticker backing; use transparent edges.
+- `assets/earls-court.jpg`: real Earl's Court venue photograph from [Cinnamon Lakeside's official venue listing](https://www.cinnamonhotels.com/cinnamon-lakeside-colombo/weddings-and-events). Original image: https://d18slle4wlf9ku.cloudfront.net/www.cinnamonhotels.com-1754953340/cms/cache/v2/69fb0a02218e3.jpg/1000x600/fit/80/c04897b51460f07062fe22ca51e6dc10.jpg
 
-Download the full project ZIP from the ChatGPT conversation and upload the video via GitHub's **Add file → Upload files** into `assets/`. Keep the filename exactly `invitation-film.mp4`. The video element will work once that file is present.
-
-Other assets, site HTML, styling, scripts and guest-link generator are committed on `main`.
+The invitation-film section and public sharing control have been removed.
