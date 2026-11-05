@@ -12,7 +12,8 @@ A responsive ivory-and-gold wedding invitation website.
 ## Deployment
 Enable **Settings → Pages → Build and deployment → Deploy from a branch → main / (root)**.
 
-Expected website: https://banu-liyanage.github.io/naduni-ushan-wedding/
+After deployment, find the published website address under **Settings → Pages**.
+To use an address that does not contain a GitHub account name, configure a custom domain in the same Pages settings.
 
 ## Two media files still to upload
 The source package includes these two larger binary files, but they have **not** been uploaded to GitHub yet:
