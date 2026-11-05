@@ -9,6 +9,17 @@ A responsive ivory-and-gold wedding invitation website.
 - **RSVP:** WhatsApp-based; no Google Sheets backend.
 - **Music:** `assets/wedding-song.mp3` contains the original song's 1:35–2:10 excerpt. Clicking the red wax seal opens the invitation and plays this 35-second clip on repeat. The header music button pauses/resumes playback; no YouTube player is loaded.
 
+## Send invitations to different guests
+
+Open https://naduni-ushan-wedding.github.io/create-guest-links.html, enter one guest or family name per line, and choose **Generate invitation links**. Send each person only the link listed beneath their name. There is one shared website; each guest link changes the greeting and prefills the RSVP name for that visitor. Old encoded guest links continue to work.
+
+You can also make a link directly:
+
+- Chandrika Sajeewani: `https://naduni-ushan-wedding.github.io/?guest=Chandrika%20Sajeewani`
+- Nimal Perera: `https://naduni-ushan-wedding.github.io/?guest=Nimal%20Perera`
+
+Change `defaultGuestName` near the top of `script.js` only to change the main link's default greeting. Set it to `''` for the general greeting. Personalised links override the default, so you do not need to edit or publish code for each guest. Changing the name in `index.html` alone does not override JavaScript personalisation.
+
 ## Deployment
 
 The invitation's organization is `Naduni-Ushan-Wedding`. Its GitHub Pages repository is `Naduni-Ushan-Wedding/naduni-ushan-wedding.github.io`, with the public invitation address `https://naduni-ushan-wedding.github.io/` once Pages deployment completes. Personalised links are generated at `https://naduni-ushan-wedding.github.io/create-guest-links.html`.

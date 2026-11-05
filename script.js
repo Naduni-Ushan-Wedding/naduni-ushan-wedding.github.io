@@ -23,7 +23,10 @@ function getGuestName() {
   return name.replace(/\s+/g, ' ').trim().slice(0, 90);
 }
 
-const guest = getGuestName() || 'Chabdrika Sajeewani';
+// Default greeting for the main link. Individual ?guest= links override this name.
+// Leave this blank to use the general greeting for visitors without a guest link.
+const defaultGuestName = 'Chandrika Sajeewani';
+const guest = getGuestName() || defaultGuestName;
 if (guest) {
   $('#opening-guest').textContent = `Dear ${guest}`;
   $('#hero-guest').textContent = `A special invitation for ${guest}`;
