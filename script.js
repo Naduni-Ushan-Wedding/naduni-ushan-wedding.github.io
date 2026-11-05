@@ -23,7 +23,7 @@ function getGuestName() {
   return name.replace(/\s+/g, ' ').trim().slice(0, 90);
 }
 
-const guest = getGuestName();
+const guest = getGuestName() || 'Chabdrika Sajeewani';
 if (guest) {
   $('#opening-guest').textContent = `Dear ${guest}`;
   $('#hero-guest').textContent = `A special invitation for ${guest}`;
@@ -56,17 +56,24 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
 }
 
-// Lightweight petals (disabled for visitors who prefer reduced motion).
+// A sparse scatter of petals; each fall takes a fresh, random path.
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const petals = $('#petals');
-  for (let i = 0; i < 17; i++) {
+  const petalCount = window.matchMedia('(max-width: 700px)').matches ? 5 : 7;
+  function scatterPetal(petal) {
+    petal.style.setProperty('--left', `${5 + Math.random() * 90}%`);
+    petal.style.setProperty('--drift', `${(Math.random() - 0.5) * 180}px`);
+    petal.style.setProperty('--size', `${8 + Math.random() * 5}px`);
+    petal.style.setProperty('--blur', Math.random() < 0.2 ? '0.6px' : '0px');
+  }
+  for (let i = 0; i < petalCount; i++) {
     const petal = document.createElement('i');
     petal.className = 'petal';
-    petal.style.setProperty('--left', `${(i * 43 + 11) % 100}%`);
-    petal.style.setProperty('--duration', `${11 + (i * 7) % 11}s`);
-    petal.style.setProperty('--delay', `${-1 * ((i * 19) % 21)}s`);
-    petal.style.setProperty('--drift', `${(i % 2 === 0 ? 1 : -1) * (40 + (i * 17) % 120)}px`);
-    petal.style.setProperty('--blur', `${i % 5 === 0 ? '1.2' : '0'}px`);
+    const duration = 18 + Math.random() * 14;
+    petal.style.setProperty('--duration', `${duration}s`);
+    petal.style.setProperty('--delay', `${-Math.random() * duration}s`);
+    scatterPetal(petal);
+    petal.addEventListener('animationiteration', () => scatterPetal(petal));
     petals.appendChild(petal);
   }
 }
@@ -81,7 +88,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// The local 25-second clip is already trimmed to 1:35–2:00 and loops natively.
+// The local 35-second clip is already trimmed to 1:35–2:10 and loops natively.
 const weddingAudio = $('#wedding-audio');
 const musicButton = $('#music-button');
 const musicLabel = $('#music-label');

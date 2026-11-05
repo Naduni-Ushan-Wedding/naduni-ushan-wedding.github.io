@@ -7,7 +7,7 @@ A responsive ivory-and-gold wedding invitation website.
 - **Venue:** Earl's Court, Cinnamon Lakeside, Colombo
 - **Guest links:** Open `create-guest-links.html` after GitHub Pages is enabled.
 - **RSVP:** WhatsApp-based; no Google Sheets backend.
-- **Music:** `assets/wedding-song.mp3` contains the original song's 1:35–2:00 excerpt. Clicking the letter seal opens the invitation and plays this 25-second clip on repeat. The header music button pauses/resumes playback; no YouTube player is loaded.
+- **Music:** `assets/wedding-song.mp3` contains the original song's 1:35–2:10 excerpt. Clicking the red wax seal opens the invitation and plays this 35-second clip on repeat. The header music button pauses/resumes playback; no YouTube player is loaded.
 
 ## Deployment
 
