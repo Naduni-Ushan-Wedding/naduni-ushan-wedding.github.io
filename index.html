@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f7f1e6">
+  <meta name="theme-color" content="#f8f5ef">
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="You are joyfully invited to celebrate the wedding of Naduni and Ushan on 10 December 2026 at Cinnamon Lakeside, Colombo.">
   <meta property="og:type" content="website">
@@ -27,15 +27,14 @@
     <div class="opening-ornament mandala opening-mandala-b" aria-hidden="true"></div>
     <div class="opening-card">
       <div class="opening-inner">
-        <div class="seal">N <span>&amp;</span> U</div>
         <p class="eyebrow">A celebration of love</p>
         <p class="dear" id="opening-guest">Dear family &amp; friends</p>
         <h1 id="opening-heading">You're <em>Invited</em></h1>
         <div class="ornamental-rule" aria-hidden="true"><span>✦</span></div>
         <p class="opening-names">Naduni <span>&amp;</span> Ushan</p>
         <p class="opening-date">Thursday, 10 December 2026</p>
-        <button id="open-invite" class="btn btn-primary opening-button" type="button">Open our invitation <span aria-hidden="true">↗</span></button>
-        <p class="opening-small">After opening, tap “Our song” to play our music</p>
+        <button id="open-invite" class="seal opening-seal" type="button" aria-label="Open our invitation and play our song" aria-describedby="opening-hint">N <span>&amp;</span> U</button>
+        <p class="opening-small" id="opening-hint">Tap the seal to open · music will play</p>
       </div>
     </div>
   </div>
@@ -48,8 +47,8 @@
       <a href="#location">Location</a>
       <a href="#rsvp">RSVP</a>
     </nav>
-    <button id="music-button" class="music-button" type="button" aria-label="Open music player" aria-haspopup="dialog" aria-expanded="false">
-      <span class="music-note" aria-hidden="true">♫</span><span>Our song</span>
+    <button id="music-button" class="music-button" type="button" aria-label="Play our song" aria-pressed="false">
+      <span class="music-note" aria-hidden="true">♫</span><span id="music-label">Our song</span>
     </button>
   </header>
 
@@ -59,10 +58,11 @@
       <div class="hero-copy reveal">
         <p class="overline"><span class="overline-line"></span> Together with our families <span class="overline-line"></span></p>
         <p class="hero-intro">The wedding celebration of</p>
-        <h2 class="script hero-names">Naduni <small>&amp;</small><br> Ushan</h2>
+        <h2 class="script hero-names"><span>Naduni</span> <small>&amp;</small> <span>Ushan</span></h2>
         <div class="ornamental-rule hero-rule" aria-hidden="true"><span>✦</span></div>
         <p class="hero-quote">With love in our hearts and joy in our souls, we invite you to celebrate the beginning of our happily ever after.</p>
         <p class="guest-personal" id="hero-guest">To our dearest family &amp; friends</p>
+        <p class="hero-details"><span>10 December 2026</span><span>Cinnamon Lakeside, Colombo</span></p>
         <a class="btn btn-primary" href="#the-day">Discover our day <span aria-hidden="true">↓</span></a>
       </div>
       <div class="hero-visual reveal">
@@ -206,12 +206,8 @@
 
   <footer><span>N <i>&amp;</i> U</span><p>Made with love • 10 December 2026</p><a href="#top">Back to top ↑</a></footer>
 
-  <!-- YouTube's official player: segment starts at 1:35 (95s), ends at 2:00 (120s). -->
-  <div id="music-panel" class="music-panel" role="dialog" aria-label="Wedding music player" aria-modal="false" hidden>
-    <div class="music-panel-heading"><div><strong>Our wedding song</strong><small>Play the special 1:35–2:00 moment</small></div><button type="button" id="close-music" aria-label="Close music player">×</button></div>
-    <div id="youtube-slot" class="youtube-slot"></div>
-    <p>Playback may require tapping Play in the YouTube player.</p>
-  </div>
+  <!-- This file contains only the original song's 1:35–2:00 segment. -->
+  <audio id="wedding-audio" src="assets/wedding-song.mp3" preload="metadata" loop></audio>
   <script src="script.js" defer></script>
 </body>
 </html>

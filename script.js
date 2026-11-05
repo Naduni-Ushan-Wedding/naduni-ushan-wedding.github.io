@@ -40,7 +40,8 @@ function openInvitation() {
   document.body.classList.remove('locked');
   $('#open-invite').blur();
   setTimeout(() => { opening.hidden = true; }, 1000);
-  // The YouTube music player can be started separately via the "Our song" control.
+  // Call play directly in the click handler so mobile browsers allow audio.
+  playMusic();
 }
 $('#open-invite').addEventListener('click', openInvitation);
 
@@ -80,32 +81,34 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// Official YouTube embed – NOT a downloaded audio track.
-// start=95 → 1:35, end=120 → 2:00. Some browsers require tapping the player.
-const musicPanel = $('#music-panel');
+// The local 25-second clip is already trimmed to 1:35–2:00 and loops natively.
+const weddingAudio = $('#wedding-audio');
 const musicButton = $('#music-button');
-function showMusic() {
-  musicPanel.hidden = false;
-  musicButton.setAttribute('aria-expanded', 'true');
-  $('#youtube-slot').innerHTML = '';
-  const iframe = document.createElement('iframe');
-  iframe.title = 'Wedding song from YouTube, 1 minute 35 seconds to 2 minutes';
-  iframe.loading = 'eager';
-  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-  iframe.allowFullscreen = true;
-  iframe.src = 'https://www.youtube-nocookie.com/embed/8gexRRFfbpQ?start=95&end=120&autoplay=1&controls=1&playsinline=1&loop=1&playlist=8gexRRFfbpQ';
-  $('#youtube-slot').appendChild(iframe);
+const musicLabel = $('#music-label');
+weddingAudio.volume = 0.6;
+function updateMusicButton() {
+  const playing = !weddingAudio.paused && !weddingAudio.ended;
+  musicButton.setAttribute('aria-pressed', String(playing));
+  musicButton.setAttribute('aria-label', playing ? 'Pause our song' : 'Play our song');
+  musicLabel.textContent = playing ? 'Pause song' : 'Our song';
 }
-function hideMusic() {
-  musicPanel.hidden = true;
-  musicButton.setAttribute('aria-expanded', 'false');
-  $('#youtube-slot').replaceChildren(); // Stops playback entirely.
+async function playMusic() {
+  try {
+    await weddingAudio.play();
+  } catch (error) {
+    if (error.name === 'AbortError') return; // The guest paused while audio loaded.
+    updateMusicButton();
+    musicLabel.textContent = 'Tap for music';
+  }
 }
-musicButton.addEventListener('click', () => musicPanel.hidden ? showMusic() : hideMusic());
-$('#close-music').addEventListener('click', hideMusic);
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !musicPanel.hidden) hideMusic(); });
-$('#invitation-video').addEventListener('play', () => { if (!musicPanel.hidden) hideMusic(); });
+weddingAudio.addEventListener('play', updateMusicButton);
+weddingAudio.addEventListener('pause', updateMusicButton);
+weddingAudio.addEventListener('error', () => {
+  updateMusicButton();
+  musicLabel.textContent = 'Retry music';
+});
+musicButton.addEventListener('click', () => weddingAudio.paused ? playMusic() : weddingAudio.pause());
+$('#invitation-video').addEventListener('play', () => weddingAudio.pause());
 
 // RSVP is intentionally transparent about where it goes. Without a backend,
 // a static GitHub Pages site cannot silently collect submissions.
